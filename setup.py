@@ -51,4 +51,10 @@ setup(
     description='A metaprogramming framework for code generation and DSL creation',
     url='https://github.com/pt-main/unitverge',
     include_package_data=True,
+    options={
+        'bdist_wheel': {
+            'python_tag': 'cp314',
+            'plat_name': 'manylinux2014_x86_64',
+        }
+    }
 )
