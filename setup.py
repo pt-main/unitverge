@@ -50,7 +50,5 @@ setup(
     ],
     description='A metaprogramming framework for code generation and DSL creation',
     url='https://github.com/pt-main/unitverge',
-    ext_package='UnitVerge.Bytex.bx2',
     include_package_data=True,
-    zip_safe=False,
 )
