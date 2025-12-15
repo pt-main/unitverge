@@ -1,5 +1,10 @@
 # UnitVerge — A Meta-Tool for Creating Tools
 
+[![Status](https://img.shields.io/badge/status-beta-yellow.svg)](https://github.com/pt-main/unitverge)
+[![PyPI](https://img.shields.io/pypi/v/unitverge.svg)](https://pypi.org/project/unitverge/)
+[![GitHub](https://img.shields.io/github/v/tag/pt-main/unitverge.svg?label=GitHub)](https://github.com/pt-main/unitverge)
+![Name](https://img.shields.io/badge/name-unitverge-blue.svg)
+
 **A foundation for building systems of any complexity without compromise.** UnitVerge is not a framework in the conventional sense, but a multi-layered architecture for creating specialized languages, code generators, and computational systems with complete control over every abstraction layer. The system eliminates dependency on external libraries and imposed architectural decisions, providing a toolkit for building tools perfectly tailored to the task.
 
 ## Key Features
