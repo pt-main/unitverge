@@ -14,7 +14,7 @@
 
 ## Architecture in Detail
 
-**Bytex VM** – A register-based virtual machine optimized for sequential operation execution. Supports 1024 registers with 4096 sections each (over 4 million cells), memory management via a pointer system, multiple memory areas (hands), and parametric cells. Fully written in Cython using cdef classes and static methods for maximum performance.
+**Bytex VM** – A register-based virtual machine optimized for sequential operation execution. Supports 2048 registers with 4096 sections each (over 8 million cells), memory management via a pointer system, multiple memory areas (hands), and parametric cells. Fully written in Cython using cdef classes and static methods for maximum performance.
 
 **Bytex Language** – A low-level language that transpiles to Python code interacting with the VM. Syntax includes memory management commands (`moveto`, `jump`), arithmetic operations (`add`, `sub`, `mull`), flow control (`start`, `do`, `goto`), preprocessor directives (`#include`, `#append`), and a plugin system for extension. The translator is built on command tables with support for dynamic addition of new instructions.
 
