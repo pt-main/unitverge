@@ -24,6 +24,10 @@ match __bx_version__:
         c_mod = [basemem]
 
 
+with open('README.md', 'r') as rf:
+    readme = f.read()
+
+
 setup(
     name='unitverge',
     author='Pt',
@@ -51,6 +55,7 @@ setup(
     description='A metaprogramming framework for code generation and DSL creation',
     url='https://github.com/pt-main/unitverge',
     include_package_data=True,
+    long_description = readme,
     options={
         'bdist_wheel': {
             'python_tag': 'cp314',
