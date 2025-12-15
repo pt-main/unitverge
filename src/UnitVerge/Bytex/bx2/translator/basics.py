@@ -11,7 +11,7 @@ import threading
 import pickle
 import time
 import abc
-from BYTEX2_back import *
+from UnitVerge.Bytex.bx2.BYTEX2_back import Memory, Memory2
 
 
 class VMEXCEPTION(Exception): pass
@@ -42,6 +42,7 @@ libs = []
 ver = {__version__}
 _is_lib = False
 MEM = Memory()
+MEM2 = Memory2()
 
 
 

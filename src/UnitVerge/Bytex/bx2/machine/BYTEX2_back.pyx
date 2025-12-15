@@ -1,3 +1,5 @@
+import pickle
+import os
 class VMEXCEPTION(Exception): pass
 
 cdef class _Memory:
@@ -8,9 +10,9 @@ cdef class _Memory:
     cdef int _cursor_idx, _pointer_idx
     
     def __init__(self):
-        self.__std_params = 256
+        self.__std_params = 1024
         self.__std_section_size = 4096
-        self.__std_registers = 1024
+        self.__std_registers = 2048
         
         self._regs = [[0] * self.__std_section_size 
                      for _ in range(self.__std_registers)]
@@ -144,3 +146,60 @@ cdef class _Memory:
         self._regs[index] = [0] * self.__std_section_size
 
 class Memory(_Memory): pass
+
+
+cdef class _Memory2:
+    cdef dict memory
+    
+    def __init__(self) -> None:
+        self.memory = {}
+    
+    cpdef void setto(self, object key, object data):
+        self.memory[key] = data
+    
+    cpdef object getfrom(self, object key):
+        return self.memory[key]
+    
+    cdef inline object _getfrom_fast(self, object key):
+        return self.memory[key]
+    
+    cpdef object getfrom_str(self, str key):
+        return self.memory.get(key)
+    
+    cpdef object getfrom_int(self, int key):
+        return self.memory.get(key)
+    
+    cpdef void setto_int(self, int key, object data):
+        self.memory[key] = data
+    
+    cpdef void setto_str(self, str key, object data):
+        self.memory[key] = data
+    
+    cpdef void update_batch(self, dict batch_data):
+        self.memory.update(batch_data)
+    
+    cpdef void clear(self):
+        self.memory.clear()
+    
+    cpdef has_key(self, object key):
+        return key in self.memory
+
+    cpdef int size(self):
+        return len(self.memory)
+    
+    cpdef list keys(self):
+        return list(self.memory.keys())
+
+    cpdef void save(self, str name):
+        with open(name, 'wb') as f:
+            pickle.dump(self.memory, f)
+    
+    cpdef void load(self, str name):
+        with open(name, 'rb') as f:
+            content = pickle.load(f)
+        self.memory = dict(content)
+
+    cpdef str path(self):
+        return os.getcwd()
+    
+class Memory2(_Memory2): pass

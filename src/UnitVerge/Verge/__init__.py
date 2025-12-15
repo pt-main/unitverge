@@ -1,4 +1,4 @@
-__version__ = '0.1.5'
+__version__ = '0.2.9'
 
 from .verge import Verge
 from .Basics.unit import Unit

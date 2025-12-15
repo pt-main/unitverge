@@ -31,10 +31,10 @@ class Verge:
                 raise ValueError(f'Instruction {repr(ins)} ({ins_type}) not in Verge instructions')
     
     def work(self, instruction: object, typ: str):
-        type = self.instruction[typ]['type']
-        try: handler = self.type[type]
+        _type = self.instruction[typ]['type']
+        try: handler = self.type[_type]
         except:
-            raise ValueError(f'Bad instruction {repr(instruction)} : unknown type {type} : has no handler.')
+            raise ValueError(f'Bad instruction {repr(instruction)} : unknown type {_type} : has no handler.')
         handler(instruction, typ)
 
     def build(self, ins: object, typ: str):
@@ -49,7 +49,7 @@ class Verge:
         for line in code: self.code.append(line)
     
     def edit(self, ins: object, typ: str):
-        try: method = self.instruction[typ]['INSTRUCTIONS']
+        try: method = self.instruction[typ]['inst_attr']
         except: raise ValueError(f'Bad instruction {repr(ins)} : has no key INSTRUCTIONS with list of instructions.')
         attr = ins.__getattribute__(method)
         if not isinstance(attr, list):
@@ -60,4 +60,7 @@ class Verge:
                 raise ValueError(f'Bad instruction {repr(sub_ins)} : bad INSTRUCTIONS for Verge : {e}.')
 
     def compile(self):
+        '''
+        -> BYTEX2 CODE
+        '''
         return self.code
