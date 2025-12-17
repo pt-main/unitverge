@@ -1,7 +1,7 @@
 from setuptools import setup, Extension, find_packages
 
 __bx_version__ = '2.0'
-__framework_verion__ = '0.9.1'
+__framework_verion__ = '0.9.8'
 
 match __bx_version__:
     case '1.0':
