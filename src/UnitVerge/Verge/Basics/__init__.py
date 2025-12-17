@@ -1,2 +1,3 @@
-from ._base import UVObj, generatable, builder, instruction
+from ._base.uvobj import UVObj, generatable, builder, instruction
+
 
