@@ -2,7 +2,7 @@
 # UnitVerge Framework
 '''
 
-__version__ = '0.8.9'
+__version__ = '0.9.1'
 
 'UV - UNITVERGE'
 from .Verge import Verge as Verge
