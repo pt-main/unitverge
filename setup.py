@@ -25,10 +25,6 @@ match __bx_version__:
         c_mod = [basemem]
 
 
-with open('README.md', 'r') as rf:
-    readme = f.read()
-
-
 setup(
     name='unitverge',
     author='Pt',
