@@ -1,7 +1,7 @@
 from setuptools import setup, Extension, find_packages
 
 __bx_version__ = '2.0'
-__framework_version__ = '0.9.0'
+__framework_verion__ = '0.9.0'
 
 match __bx_version__:
     case '1.0':
@@ -25,11 +25,15 @@ match __bx_version__:
         c_mod = [basemem]
 
 
+with open('README.md', 'r') as rf:
+    readme = f.read()
+
+
 setup(
     name='unitverge',
     author='Pt',
     author_email='kvantorium73.int@gmail.com',
-    version=__framework_version__,
+    version=__framework_verion__,
     ext_modules=c_mod,
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
@@ -51,7 +55,12 @@ setup(
     ],
     description='A metaprogramming framework for code generation and DSL creation',
     url='https://github.com/pt-main/unitverge',
-    ext_package='UnitVerge.Bytex.bx2',
     include_package_data=True,
-    zip_safe=False,
+    long_description = readme,
+    options={
+        'bdist_wheel': {
+            'python_tag': 'cp314',
+            'plat_name': 'manylinux2014_x86_64',
+        }
+    }
 )
