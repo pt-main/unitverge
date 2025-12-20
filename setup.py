@@ -1,6 +1,7 @@
 from setuptools import setup, Extension, find_packages
 
 __bx_version__ = '2.0'
+__framework_verion__ = '1.1.3'
 
 match __bx_version__:
     case '1.0':
@@ -24,15 +25,11 @@ match __bx_version__:
         c_mod = [basemem]
 
 
-with open('README.md', 'r') as rf:
-    readme = f.read()
-
-
 setup(
     name='unitverge',
     author='Pt',
     author_email='kvantorium73.int@gmail.com',
-    version='0.3.1',
+    version=__framework_verion__,
     ext_modules=c_mod,
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
@@ -55,7 +52,6 @@ setup(
     description='A metaprogramming framework for code generation and DSL creation',
     url='https://github.com/pt-main/unitverge',
     include_package_data=True,
-    long_description = readme,
     options={
         'bdist_wheel': {
             'python_tag': 'cp314',
