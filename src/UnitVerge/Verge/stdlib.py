@@ -1,4 +1,8 @@
 class Standarts:
+    '''
+    # Standarts
+    Get standart functions and code templates.
+    '''
     _ = ''
     def simpleparser(self) -> str:
         '''

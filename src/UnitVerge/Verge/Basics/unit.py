@@ -12,11 +12,15 @@ class _UnitMeta(generatable):
 
     @property
     def _temp(self) -> int:
+        'system'
+        # method to get counter
         self._counter += 1
         return self._counter
 
     @property
     def _unique_name(self):
+        'system'
+        # method to get auto-id
         return f"__auto_{self._counter}_{id(self)}"
 
     def condblock(Self, cond_type: str = 'if'):
@@ -208,10 +212,12 @@ class _UnitMeta(generatable):
         return self
 
     def start_context(self, name: str):
+        'system'
         self.raw(f"stdfunc {name}")
         return self
 
     def end_context(self):
+        'system'
         self.raw('end')
         return self
 
@@ -223,32 +229,39 @@ class _UnitFrontendMeta(_UnitMeta):
 
     @property
     def ifblock(self):
+        'Get if block'
         return self.condblock('if')
 
     @property
     def elifblock(self):
+        'Get elif block'
         return self.condblock('elif')
 
     @property
     def elseblock(self):
+        'Get else block'
         return self.condblock('else')
 
     def delay_btx(self, time_ms: int = 0):
+        'Delay method'
         if not isinstance(time_ms, int):
             raise ValueError(f"Bad input for delay: [{type(time_ms)}{time_ms}], muste be int.")
         self.raw(f'delay {time_ms}')
         return self
 
     def spawn_btx(self, name: str):
+        'Start thread method'
         self.raw(f'spawn {name}')
 
     def import_py(self, module: str):
+        'Import pyhton lib to bytex2 method'
         if not isinstance(module, str):
             raise ValueError(f"Bad input for delay: [{type(module)}{module}], muste be int.")
         self.raw(f'#import {module}')
         return self
 
     def debug_btx(self):
+        'Simple debuger (work only in runtime)'
         self.raw('debug')
         return self
 
@@ -262,59 +275,71 @@ class _UnitFrontendMeta(_UnitMeta):
         return return_var
 
     def inputint_btx(self, prompt: str = ''):
+        'Input integer method'
         self.println(prompt)
         self.raw('in')
         return self
 
     def var_btx(self, name: str, value):
+        'Create variable method'
         self.raw(f"var {name} {value}")
         return self
 
     def println_btx(self, text, to_repr: bool = False):
+        'Println method'
         text = repr(text) if to_repr else text
         self.raw(f"echoln {text}")
         return self
 
     def print_btx(self, text, to_repr: bool = False):
+        'Print method'
         text = repr(text) if to_repr else text
         self.raw(f"echo {text}")
         return self
 
     def loadto_sec(self, value: int):
+        'Load integer to current section method'
         if not isinstance(value, int):
             raise ValueError(f"Bad input to load: [{type(value)}{value}], muste be int.")
         self.raw(f"load {int(value)}")
         return self
 
     def set_hand(self, handname: str):
+        'Set current hand method'
         self.raw(f"switch {handname}")
         return self
 
     def new_hand(self, handname: str):
+        'Create new hand method'
         self.raw(f"new {handname}")
         return self
 
     def next_reg(self):
+        'Jump to next register method'
         self.raw('>')
         return self
 
     def prev_reg(self):
+        'Jump to prev register method'
         self.raw('<')
         return self
 
     def jumpto_reg(self, regindex: int):
+        'Jump to registre method'
         if not isinstance(regindex, int):
             raise ValueError(f"Bad input to jump: [{type(regindex)}{regindex}], muste be int.")
         self.raw(f"moveto {int(regindex)}")
         return self
 
     def jumpto_sec(self, secindex: int):
+        'Jump to section in register method'
         if not isinstance(secindex, int):
             raise ValueError(f"Bad input to jump: [{type(secindex)}{secindex}], muste be int.")
         self.raw(f"jump {int(secindex)}")
         return self
 
     def operation_sec(self, value: int, operation: str, copyto_regsec: str | None = '0:0'):
+        'Do operation and copy value to register'
         # check types
         if not isinstance(value, int):
             raise ValueError(f"Bad input to opertion: [{type(value)}{value}], muste be int.")
@@ -354,14 +379,17 @@ class _UnitFrontendMeta(_UnitMeta):
         return self
 
     def save_context(self, name: str):
+        'Save current context'
         self.raw(f'save "{name}.btxf"')
         return self
 
     def open_context(self, name: str):
+        'Load to current context'
         self.raw(f"open {name}.btxf")
         return self
 
     def append_context(self, name: str):
+        'Append bytex file to bytex code'
         self.raw(f'#append {name}')
         return self
 
@@ -397,17 +425,16 @@ class Unit(_UnitFrontendMeta):
         return self
 
     def register_plugin(self, name: str):
+        'Create your plugin by function and name.'
         def handler(func):
             self.plugin(name, func)
-
             def wrapper(*args, **kwargs):
                 return func(*args, **kwargs)
-
             return wrapper
-
         return handler
 
     def compile(self) -> str:
+        'Get str-code of unit'
         return self.get_str()
 
     def __getattr__(self, name):

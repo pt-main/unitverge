@@ -1,1 +1,1 @@
-from .uvobj import UVObj, generatable, builder
+from .uvobj import *
