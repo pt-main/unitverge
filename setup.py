@@ -117,7 +117,7 @@ print('==== Creating libs dir Success ====')
 
 
 __bx_version__ = '2.0'
-__framework_verion__ = '1.2'
+__framework_verion__ = '1.4'
 
 match __bx_version__:
     case '1.0':
