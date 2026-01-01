@@ -5,7 +5,8 @@ import sys
 
 print('==== Creating libs dir ====')
 LIBS = Path.home() / 'BTXLIBS'
-LIBS.mkdir(exist_ok=True)
+if not os.path.exists(LIBS):
+    LIBS.mkdir(exist_ok=True)
 
 setuplib = '''metadata by pt, description = lib for install bytex2 modules
 
