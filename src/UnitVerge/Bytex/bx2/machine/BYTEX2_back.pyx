@@ -1,10 +1,45 @@
+# cython: language_level=3
+# cython: boundscheck=False
+# cython: wraparound=False
+# cython: initializedcheck=False
+# cython: nonecheck=False
+# cython: cdivision=True
+
 import pickle
 import os
+from functools import lru_cache
 class VMEXCEPTION(Exception): pass
+    
+cdef class FastRepeater:
+    cdef:
+        object _obj
+        Py_ssize_t _iters
+    
+    def __cinit__(self, object obj, Py_ssize_t iters):
+        self._obj = obj
+        self._iters = iters
+    
+    cpdef void run(self):
+        cdef:
+            Py_ssize_t i
+            object obj = self._obj
+            Py_ssize_t iters = self._iters
+        
+        for i in range(iters):
+            obj()
+    
+    def __call__(self):
+        self.run()
+
+
+
+
+
+
 
 cdef class _Memory:
     cdef int __std_params, __std_section_size, __std_registers
-    cdef list _regs
+    cdef list[int, int] _regs
     cdef dict _hands, params
     cdef str _hand
     cdef int _cursor_idx, _pointer_idx
@@ -13,6 +48,7 @@ cdef class _Memory:
         self.__std_params = 1024
         self.__std_section_size = 4096
         self.__std_registers = 2048
+        self.CHECK = True
         
         self._regs = [[0] * self.__std_section_size 
                      for _ in range(self.__std_registers)]
@@ -67,13 +103,14 @@ cdef class _Memory:
         return 0 <= idx < max_val
     
     cdef void _check(self) except *:
-        if not self._is_valid_index(self._cursor_idx, 1024):
-            raise VMEXCEPTION(f"CURSOR {self._cursor_idx} out of range 0-1023")
-        if not self._is_valid_index(self._pointer_idx, 512):
-            raise VMEXCEPTION(f"POINTER {self._pointer_idx} out of range 0-511")
+        ln1 = len(self._regs)
+        if not self._is_valid_index(self._cursor_idx, ln1):
+            raise VMEXCEPTION(f"CURSOR {self._cursor_idx} out of range 0-{ln1}")
+        if not self._is_valid_index(self._pointer_idx, self.__std_registers):
+            raise VMEXCEPTION(f"POINTER {self._pointer_idx} out of range 0-{self.__std_registers}")
     
     cpdef check(self):
-        self._check()
+        if self.CHECK: self._check()
     
     cpdef list getreg(self, object reg=None):
         self._check()
@@ -81,22 +118,17 @@ cdef class _Memory:
             return self._regs[self._cursor_idx]
         return self._regs[reg]
     
-    cpdef long getsum(self, object reg='curr'):
+    cpdef int getsum(self, object reg='curr'):
         cdef list reg_list
-        cdef long total = 0
-        cdef int i
-        
         self._check()
-        
         if reg == 'curr':
             reg_list = self._regs[self._cursor_idx]
         else:
             reg_list = self._regs[reg]
-        
-        cdef int length = len(reg_list)
-        for i in range(length):
-            total += reg_list[i]
-        return total
+        try:
+            return int(sum(reg_list))
+        except:
+            return -1
     
     cpdef object getdata(self, object where=None):
         self._check()
@@ -139,11 +171,11 @@ cdef class _Memory:
         self._cursor_idx = index
     
     cpdef void repeat(self, object object, int iters):
-        cdef int iter = 0
-        for iter in range(iters): object()
+        FastRepeater(obj=object, iters=iters)()
     
     cpdef void _create_reg(self, int index):
-        self._regs[index] = [0] * self.__std_section_size
+        if index < len(self.regs): self._regs[index] = [0] * self.__std_section_size
+        else: self._regs.append([0] * self.__std_section_size)
 
 class Memory(_Memory): pass
 

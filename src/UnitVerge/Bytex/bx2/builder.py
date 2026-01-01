@@ -12,7 +12,7 @@ def build(code: str):
 
 
 
-def bin(code: str, fileout: str = 'a.out'):
+def bin(code: str, fileout: str = 'a.py'):
     built = build(code)
     with open(fileout, 'w') as f:
         f.write(built)

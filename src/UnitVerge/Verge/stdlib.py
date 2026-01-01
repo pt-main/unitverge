@@ -14,9 +14,9 @@ def parse(code: str) -> list[list[str]]:
     # Parser
     Simple Bytex2 code splitter and parser.
     '''
-    code = code.replace(';', '\n')
+    code = code.replace(';', '\\n')
     commands = []
-    for i in code.split('\n'):
+    for i in code.split('\\n'):
         command = []
         i = i.strip()
         for j in i.split(' '):
@@ -26,3 +26,7 @@ def parse(code: str) -> list[list[str]]:
     return commands
         """
         return code
+    
+    def parse_btx2(self, code):
+        from UnitVerge.Bytex.bx2.translator.translator import parse
+        return parse(code)

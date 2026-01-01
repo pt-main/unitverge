@@ -1,17 +1,20 @@
 from . import __version__
 import time
-
 core = f'''
 
 class Memory:...
 
-
-
+from UnitVerge import Bytex
+from UnitVerge import Bytex
+import asyncio
 import threading
 import pickle
 import time
 import abc
-from UnitVerge.Bytex.bx2.BYTEX2_back import Memory, Memory2
+import sys
+import functools
+from pathlib import Path
+from BYTEX2_back import Memory, Memory2
 
 
 class VMEXCEPTION(Exception): pass
@@ -44,6 +47,9 @@ _is_lib = False
 MEM = Memory()
 MEM2 = Memory2()
 
+
+
+LIBS = Path.home() / 'BTXLIBS' # path for libs
 
 
 class language:
@@ -79,3 +85,4 @@ class language:
 LANG = language()
 
 '''.split('\n')
+

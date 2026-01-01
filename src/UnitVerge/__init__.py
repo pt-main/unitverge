@@ -2,10 +2,10 @@
 # UnitVerge Framework
 '''
 
-__version__ = '0.8.9'
+__version__ = '0.9.5'
 
 'UV - UNITVERGE'
-from .Verge import Verge as Verge
+from .Verge import Verge as Verge 
 from .Verge.Basics.syntax import SForm as SForm
 from .Verge import UVObj
 from .Verge import Unit as Unit
@@ -24,6 +24,8 @@ class Bytex:
     - `translator()` -> `type[Translator]` : get language translator (bytex2)
     '''
     _current = '2.0'
+    def __init__(self, ver: str = '2.0') -> None:
+        self._current = ver
     def get(self):
         'get lang with _current parameter version'
         from .Bytex import get_from_ver
@@ -47,6 +49,11 @@ class Bytex:
         'get bytex2 translator'
         from .Bytex.bx2 import Translator
         return Translator
+    
+    @property
+    def stdbtx2(self):
+        from .Verge.stdlib import Standarts
+        return Standarts()
 
 
 

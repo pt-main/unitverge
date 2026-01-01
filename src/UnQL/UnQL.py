@@ -18,32 +18,21 @@ class UnQL:
         match type:
             case 'get':
                 check(1, ['FROM'])
-                RESULT = '_res'
-                code = f'''
-with Query({repr(self.name)}) as q:
-    q.getfrom({repr(kwargs['FROM'])}, out={repr(RESULT)})
-{RESULT} = q.scope[{repr(RESULT)}]
-                '''
-                exec(code, loc, loc)
-                return loc[RESULT]
+                with Query(repr(self.name)) as q:
+                    q.getfrom(repr(kwargs['FROM']), out="_res")
+                _res = q.scope["_res"]
+                return _res
             case 'put':
                 check(2, ['TO', 'DATA'])
-                code = f'''
-with Query({repr(self.name)}) as q:
-    q.setto(key = {repr(kwargs['TO'])}, data = {repr(kwargs['DATA'])})
-                '''
-                exec(code, loc, loc)
+                with Query(repr(self.name)) as q:
+                    q.setto(key = repr(kwargs['TO']), data = repr(kwargs['DATA']))
                 return self
             case 'select':
                 check(1, ['WHEN'])
-                RESULT = '_result'
-                code = f'''
-with Query({repr(self.name)}) as q:
-    q.select(condition = {repr(kwargs['WHEN'])})
-{RESULT} = q.scope[{repr(RESULT)}]
-                '''
-                exec(code, loc, loc)
-                return loc[RESULT]
+                with Query(repr(self.name)) as q:
+                    q.select(condition = {repr(kwargs['WHEN'])})
+                _res = q.scope["result"]
+                return _res
             case _:
                 raise SyntaxError(f'Unknow request type: {type}')
         
